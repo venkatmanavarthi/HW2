@@ -1,51 +1,3 @@
-# Unmanned Systems HW2
-
-## Problem 1
-Problem 1:
-Create a function that calculates the distance from one node to another.
-Pass two nodes to the function and return the Euclidean distance. Test your
-function by having it calculate the distance from (2,1) to (3,2). Make sure
-the answer is correct.
-```
-d = √(x2 - x1)^2 + (y2 - y1)^2
-```
-
-```
-import math
-
-
-def calculate_distance(x1, y1, x2, y2):
-    """
-    Args:
-      x1: X for input location 1 
-      x2: Y for input location 1
-      y1: X for input location 2
-      y2: Y for input location 2
-
-    Returns:
-      The Euclidean distance
-    """
-    return round(math.sqrt((x2 - x1)**2 + (y2 - y1)**2), 2)
-
-
-if __name__ == "__main__":
-    print(calculate_distance(x1=2, y1=1, x2=3, y2=2))
-```
-
-## Problem 2
-Problem 2:
-Create a function that checks if the current node is valid based upon the list
-of obstacles, grid boundaries, and current location.
-
-Using an obstacle list of (1,1), (4,4), (3,4), (5,0), (5,1), (0,7), (1,7), (2,7), and
-(3,7); and a bounding box of 0 to 10 for both x and y, and step size of 0.5,
-verify that the location (2,2) is valid. Assume the obstacles have a diameter
-of 0.5 (only occupy the node at which they reside).
-
-Pass the obstacle list, node, and map boundaries/step size, and return a
-Boolean True/False depending on if the node location is valid (reachable).
-
-```
 from problem1 import calculate_distance
 import matplotlib.pyplot as plt
 
@@ -58,8 +10,6 @@ class Obstacle:
     def is_inside(self, cur_x, cur_y, r_radius=0) -> bool:
         """
         Args:
-          ob_x: X position of the obstacle
-          ob_y: Y position of the obstacle
           cur_x: X position of the robot
           cur_y: Y potition of the robot
           r_radius: Robot radius
@@ -75,6 +25,21 @@ class Obstacle:
 
 
 def is_valid(obs, x_min, y_min, x_max, y_max, cur_x, cur_y, r_radius=0) -> bool:
+    """
+    Args:
+        obs: List of Obstacles
+        x_min: Grid Bounds
+        y_min: Grid Bounds
+        x_max: Grid Bounds
+        y_max: Grid Bounds
+        cur_x: X position of the robot
+        cur_y: Y potition of the robot
+        r_radius: Robot radius
+
+    Returns:
+        True if point is a valid location
+        False if point is a invalid location
+    """
     for each_obs in obs:
         if each_obs.is_inside(cur_x, cur_y, r_radius):
             return False
@@ -116,6 +81,5 @@ if __name__ == "__main__":
     
     agent_plot = plt.Circle((cur_x, cur_y), r_radius, color='red')
     ax.add_patch(agent_plot)
-    plt.show()  
-```
-![Problem 2 Output](./images/problem2.png)
+    plt.title("Problem 2")
+    plt.show()    
