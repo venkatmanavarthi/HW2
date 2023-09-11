@@ -82,4 +82,4 @@ if __name__ == "__main__":
     agent_plot = plt.Circle((cur_x, cur_y), r_radius, color='red')
     ax.add_patch(agent_plot)
     plt.title("Problem 2")
-    plt.show()    
+    plt.show()
