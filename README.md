@@ -257,18 +257,26 @@ class Dijkstras:
         Returns:
           None
         """
-        print(route)
         import matplotlib.pyplot as plt
+        import numpy as np
         fig, ax = plt.subplots()
-        ax.set_xlim(0, 10)
-        ax.set_ylim(0, 10)
-        print(self.obs_list) 
+
+        x_values = np.arange(self.min_x, self.max_x + self.gs, self.gs)
+        y_values = np.arange(self.min_y, self.max_y + self.gs, self.gs)
+
+        for y in y_values:
+            for x in x_values:
+                index = compute_index(self.min_x, self.max_x, self.min_y, self.max_y, self.gs, x, y)
+                plt.text(x, y, str(index), color='red', fontsize=8, ha='center', va='center')
+
         for obs in self.obs_list:
             obs_plot = plt.Circle((obs.x, obs.y), obs.radius, color='black')
             ax.add_patch(obs_plot)
-        obs_plot = plt.Circle((self.goal[0], self.goal[1]), self.r_radius, color='green')
+        obs_plot = plt.Circle((self.goal[0], self.goal[1]), self.r_radius + 0.25, color='green')
         ax.add_patch(obs_plot)
         plt.plot([x[0] for x in route], [x[1] for x in route], c='red')
+        plt.xlim(self.min_x - self.gs, self.max_x + self.gs)
+        plt.ylim(self.min_y - self.gs, self.max_y + self.gs)
         plt.show()
 
 if __name__ == "__main__":
@@ -278,7 +286,7 @@ if __name__ == "__main__":
     obs_list = [Obstacle(each_ob[0], each_ob[1], obs_radius)
                 for each_ob in obs_pos]
     djs = Dijkstras(0, 0, 10, 10, 0.5)
-    route = djs.run(start=(0, 0), goal=(8, 9), r_radius=0.25, obs_list=obs_list)
+    route = djs.run(start=(0, 0), goal=(8, 9), r_radius=0, obs_list=obs_list)
     djs.plot_route(route=route)
 ```
 ![Problem 3 Output](./images/problem3.png)
