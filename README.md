@@ -167,12 +167,14 @@ class Dijkstras:
         self.max_y = max_y
         self.gs = gs
 
-    def run(self, start: tuple, goal: tuple, obs_list: list = [], r_radius=0) -> list:
+    def run(self, start: tuple, goal: tuple, obs_list: list = [], r_radius=0, inflate=False) -> list:
         """
         Args:
           start(tuple): x,y representing the start location of the robot
           goal(tuple): x,y representing the goal location of the robot
           obs_list: List of obstacles
+          r_radius: Robot Radius
+          inflate: True to inflate obstacles and robot | False will not inflate
         Returns:
           List of nodes from start to goal
         """
@@ -182,6 +184,13 @@ class Dijkstras:
         self.goal = goal
         self.start = start
         self.r_radius = r_radius
+        # if want to inflate the obstacle or size of the 
+        if inflate:
+            for i in range(len(self.obs_list)):
+                self.obs_list[i].radius = self.obs_list[i].radius * 1.5
+            self.r_radius = r_radius * 1.5
+
+        
         goal_index = compute_index(
             self.min_x, self.max_x, self.min_y, self.max_y, self.gs, goal[0], goal[1])
         start_index = compute_index(
@@ -272,7 +281,7 @@ class Dijkstras:
         for obs in self.obs_list:
             obs_plot = plt.Circle((obs.x, obs.y), obs.radius, color='black')
             ax.add_patch(obs_plot)
-        obs_plot = plt.Circle((self.goal[0], self.goal[1]), self.r_radius + 0.25, color='green')
+        obs_plot = plt.Circle((self.goal[0], self.goal[1]), self.r_radius, color='green')
         ax.add_patch(obs_plot)
         plt.plot([x[0] for x in route], [x[1] for x in route], c='red')
         plt.xlim(self.min_x - self.gs, self.max_x + self.gs)
@@ -288,6 +297,7 @@ if __name__ == "__main__":
     djs = Dijkstras(0, 0, 10, 10, 0.5)
     route = djs.run(start=(0, 0), goal=(8, 9), r_radius=0, obs_list=obs_list)
     djs.plot_route(route=route)
+
 ```
 ![Problem 3 Output](./images/problem3.png)
 
